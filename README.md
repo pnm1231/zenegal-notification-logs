@@ -4,18 +4,7 @@
 
 ### Installation ###
 
-Add the following to your `composer.json` file.
-
-    {
-        "repositories": [
-            {
-                "type": "vcs",
-                "url": "git@github.com:pnm1231/zenegal-notification-logs.git"
-            }
-        ]
-    }
-
-Install via [composer](http://getcomposer.org)
+Install via [composer](http://getcomposer.org) in the Laravel application.
 
     composer require zenegal/notification-logs
 
