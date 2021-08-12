@@ -1,0 +1,25 @@
+{
+  "name": "zenegal/notification-logs",
+  "description": "Log email and SMS notifications sent by the platform with sending statuses.",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Prasad Nayanajith",
+      "email": "prasad@zenegal.lk"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "Zenegal\\NotificationLogs\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Zenegal\\NotificationLogs\\NotificationLogsServiceProvider"
+      ]
+    }
+  }
+}
