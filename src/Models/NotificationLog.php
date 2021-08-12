@@ -18,8 +18,15 @@ class NotificationLog extends Model
     protected $casts = [
         'modal_id' => 'integer',
         'recipients' => 'array',
-        'sent_at' => 'timestamp',
+        'sent_at' => 'datetime',
     ];
+
+    public function scopeFilter(object $query, array $filters)
+    {
+        if (isset($filters['sent_status'])) {
+            $query->where('is_sent', $filters['sent_status'] === 'sent');
+        }
+    }
 
     public function store()
     {

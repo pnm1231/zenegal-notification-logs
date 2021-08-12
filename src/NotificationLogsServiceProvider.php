@@ -40,6 +40,10 @@ class NotificationLogsServiceProvider extends ServiceProvider
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command('notification-logs:prune')->hourly();
         });
+
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'notification-logs');
     }
 
     private function registerMailableData()

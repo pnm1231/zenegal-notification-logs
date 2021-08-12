@@ -10,7 +10,11 @@ Install via [composer](http://getcomposer.org) in the Laravel application.
 
 ### Usage ###
 
-The package comes with a command to prune mailables from old sent notification logs.
+This package comes with a single page to view all notifications with a sent status filter.
+
+- `/notification-logs`
+
+The package also comes with a command to prune mailables from old sent notification logs.
 
 - `notification-logs:prune`
 
