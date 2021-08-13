@@ -8,6 +8,28 @@
             <form>
                 <div class="form-row align-items-center">
                     <div class="col-auto">
+                        <label class="mb-0 small text-muted" for="select-object">Object</label>
+                        <select class="form-control" id="select-object" name="object">
+                            <option value="">All</option>
+                            @foreach($models as $model)
+                                <option value="{{ $model->model }}" {{ request('object')===$model->model ? 'selected' : '' }}>{{ $model->model_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <label class="mb-0 small text-muted" for="input-object-id">Object ID</label>
+                        <input type="number" class="form-control" id="input-object-id" name="object_id" value="{{ request('object_id') }}" min="1">
+                    </div>
+                    <div class="col-auto">
+                        <label class="mb-0 small text-muted" for="select-notification-type">Notification Type</label>
+                        <select class="form-control" id="select-notification-type" name="notification_type">
+                            <option value="">All</option>
+                            @foreach($mailableNames as $mailableName)
+                                <option value="{{ $mailableName->mailable_name }}" {{ request('notification_type')===$mailableName->mailable_name ? 'selected' : '' }}>{{ $mailableName->mailable_name_string }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-auto">
                         <label class="mb-0 small text-muted" for="select-sent-status">Sent Status</label>
                         <select class="form-control" id="select-sent-status" name="sent_status">
                             <option value="">All</option>
@@ -43,7 +65,8 @@
                 <thead class="thead-light">
                     <tr>
                         <th>ID</th>
-                        <th>Notification</th>
+                        <th>Object</th>
+                        <th>Notification Type</th>
                         <th>Subject</th>
                         <th>Recipient(s)</th>
                         <th class="text-center">Queued</th>
@@ -56,6 +79,12 @@
                     @foreach($notificationLogs AS $notificationLog)
                         <tr>
                             <td>{{ $notificationLog->id }}</td>
+                            <td>
+                                @if($notificationLog->model)
+                                    <span class="badge badge-primary">{{ $notificationLog->model_name }}</span>
+                                    <span class="badge badge-primary">{{ $notificationLog->model_id }}</span>
+                                @endif
+                            </td>
                             <td>{{ $notificationLog->mailable_name_string }}</td>
                             <td>{{ $notificationLog->subject }}</td>
                             <td>{{ implode(', ', $notificationLog->recipients) }}</td>
@@ -63,7 +92,12 @@
                             <td class="text-center">
                                 <i class="fas fa-{{ $notificationLog->is_sent ? 'check' : 'times' }} text-{{ $notificationLog->is_sent ? 'success' : 'danger' }}"></i>
                             </td>
-                            <td>{{ $notificationLog->sent_at ? $notificationLog->sent_at->format('Y-m-d g:i A') : '' }}</td>
+                            <td class="text-nowrap">
+                                @if($notificationLog->sent_at)
+                                    <div class="small text-muted">{{ $notificationLog->sent_at->format('Y-m-d') }}</div>
+                                    {{ $notificationLog->sent_at->format('g:i A') }}
+                                @endif
+                            </td>
                             <td class="text-center">{{ $notificationLog->tries }}</td>
                         </tr>
                     @endforeach
@@ -74,6 +108,8 @@
 
     <nav>
         {{ $notificationLogs->appends([
+            'object' => request('object'),
+            'object_id' => request('object_id'),
             'sent_status' => request('sent_status'),
             'limit' => request('limit'),
             'page' => request('page'),

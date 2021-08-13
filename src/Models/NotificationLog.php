@@ -6,7 +6,6 @@ use App\Models\NotificationType;
 use App\Models\Store;
 use App\Traits\ScopeStoreId;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Mail;
 use Zenegal\NotificationLogs\Support\Str;
 
 class NotificationLog extends Model
@@ -16,13 +15,25 @@ class NotificationLog extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'modal_id' => 'integer',
+        'model_id' => 'integer',
         'recipients' => 'array',
         'sent_at' => 'datetime',
     ];
 
     public function scopeFilter(object $query, array $filters)
     {
+        if (isset($filters['object'])) {
+            $query->where('model', $filters['object']);
+        }
+
+        if (isset($filters['object_id'])) {
+            $query->where('model_id', $filters['object_id']);
+        }
+
+        if (isset($filters['notification_type'])) {
+            $query->where('mailable_name', $filters['notification_type']);
+        }
+
         if (isset($filters['sent_status'])) {
             $query->where('is_sent', $filters['sent_status'] === 'sent');
         }
@@ -40,23 +51,7 @@ class NotificationLog extends Model
 
     public function object()
     {
-        return $this->modal::find($this->modal_id);
-    }
-
-    public function resend(): void
-    {
-        if ($this->is_notification) {
-            (unserialize($this->notifiable))->notify(unserialize($this->notification));
-        } else {
-            $mailable = unserialize($this->mailable);
-
-            Mail::send($mailable->with([
-                '__notification_logs' => [
-                    'id' => $this->id,
-                    'uuid' => $this->uuid
-                ]
-            ]));
-        }
+        return $this->model::find($this->model_id);
     }
 
     public function getMailableNameStringAttribute(): string
@@ -64,5 +59,12 @@ class NotificationLog extends Model
         $mailableName = Str::afterLast($this->mailable_name, '\\');
 
         return Str::studlyWords(Str::snake($mailableName));
+    }
+
+    public function getModelNameAttribute(): string
+    {
+        $modelName = Str::afterLast($this->model, '\\');
+
+        return Str::studlyWords(Str::snake($modelName));
     }
 }

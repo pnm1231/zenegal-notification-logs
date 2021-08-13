@@ -61,13 +61,13 @@ class NotificationLogsServiceProvider extends ServiceProvider
                 }
             }
 
-            $modal = null;
-            $modalId = null;
+            $model = null;
+            $modelId = null;
 
             if (isset($mailable->viewData['order'])) {
                 $reflection = new \ReflectionClass($mailable->viewData['order']);
-                $modal = $reflection->getName();
-                $modalId = $mailable->viewData['order']->id;
+                $model = $reflection->getName();
+                $modelId = $mailable->viewData['order']->id;
             }
 
             return array_merge($data, [
@@ -79,8 +79,8 @@ class NotificationLogsServiceProvider extends ServiceProvider
                     'recipients' => collect($mailable->to)->pluck('address')->toArray(),
                     'mailable_name' => get_class($mailable),
                     'mailable' => serialize(clone $mailable),
-                    'modal' => $modal,
-                    'modal_id' => $modalId,
+                    'model' => $model,
+                    'model_id' => $modelId,
                     'is_queued' => in_array(ShouldQueue::class, class_implements($mailable)),
                 ]
             ]);

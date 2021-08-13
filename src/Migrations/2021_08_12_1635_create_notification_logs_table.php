@@ -23,9 +23,9 @@ class CreateNotificationLogsTable extends Migration
             $table->text('recipients')->nullable();
             $table->string('mailable_name')->nullable();
             $table->text('mailable')->nullable();
-            $table->string('modal')->nullable();
-            $table->bigInteger('modal_id')->nullable();
-            $table->index(['modal', 'modal_id']);
+            $table->string('model')->nullable();
+            $table->bigInteger('model_id')->nullable();
+            $table->index(['model', 'model_id']);
             $table->boolean('is_queued');
             $table->boolean('is_notification')->default(false);
             $table->text('notifiable')->nullable();
