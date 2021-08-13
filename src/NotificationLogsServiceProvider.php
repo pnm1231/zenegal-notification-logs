@@ -63,12 +63,14 @@ class NotificationLogsServiceProvider extends ServiceProvider
 
             $modelId = null;
 
-            if (isset($mailable->viewData['order'])) {
-                $reflection = new \ReflectionClass($mailable->viewData['order']);
-                $modelId = $mailable->viewData['order']->id;
-            } else if (isset($mailable->viewData['product'])) {
-                $reflection = new \ReflectionClass($mailable->viewData['product']);
-                $modelId = $mailable->viewData['product']->id;
+            $identities = ['order', 'product', 'refund', 'shipping_provider'];
+
+            foreach ($identities as $identity) {
+                if (isset($mailable->viewData[$identity]) && $mailable->viewData[$identity]->id) {
+                    $reflection = new \ReflectionClass($mailable->viewData[$identity]);
+                    $modelId = $mailable->viewData[$identity]->id;
+                    break;
+                }
             }
 
             $model = $modelId ? $reflection->getName() : null;
