@@ -8,7 +8,7 @@
       "email": "prasad@zenegal.lk"
     }
   ],
-  "version": "0.10",
+  "version": "0.11",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "autoload": {

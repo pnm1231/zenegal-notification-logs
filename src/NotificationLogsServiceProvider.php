@@ -61,14 +61,17 @@ class NotificationLogsServiceProvider extends ServiceProvider
                 }
             }
 
-            $model = null;
             $modelId = null;
 
             if (isset($mailable->viewData['order'])) {
                 $reflection = new \ReflectionClass($mailable->viewData['order']);
-                $model = $reflection->getName();
                 $modelId = $mailable->viewData['order']->id;
+            } else if (isset($mailable->viewData['product'])) {
+                $reflection = new \ReflectionClass($mailable->viewData['product']);
+                $modelId = $mailable->viewData['product']->id;
             }
+
+            $model = $modelId ? $reflection->getName() : null;
 
             return array_merge($data, [
                 '__notification_logs' => [

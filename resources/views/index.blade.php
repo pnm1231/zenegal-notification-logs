@@ -66,12 +66,12 @@
                     <tr>
                         <th>ID</th>
                         <th>Object</th>
-                        <th>Notification Type</th>
+                        <th class="text-nowrap">Object ID</th>
+                        <th class="text-nowrap">Notification Type</th>
                         <th>Subject</th>
                         <th>Recipient(s)</th>
-                        <th class="text-center">Queued</th>
                         <th class="text-center">Sent</th>
-                        <th>Sent Time</th>
+                        <th class="text-nowrap">Sent Time</th>
                         <th class="text-center">Tries</th>
                     </tr>
                 </thead>
@@ -79,16 +79,11 @@
                     @foreach($notificationLogs AS $notificationLog)
                         <tr>
                             <td>{{ $notificationLog->id }}</td>
-                            <td>
-                                @if($notificationLog->model)
-                                    <span class="badge badge-primary">{{ $notificationLog->model_name }}</span>
-                                    <span class="badge badge-primary">{{ $notificationLog->model_id }}</span>
-                                @endif
-                            </td>
+                            <td>{{ $notificationLog->model ? $notificationLog->model_name : '' }}</td>
+                            <td>{{ $notificationLog->model_id ?: '' }}</td>
                             <td>{{ $notificationLog->mailable_name_string }}</td>
                             <td>{{ $notificationLog->subject }}</td>
                             <td>{{ implode(', ', $notificationLog->recipients) }}</td>
-                            <td class="text-center text-muted">{{ $notificationLog->is_queued ? 'Yes' : 'No' }}</td>
                             <td class="text-center">
                                 <i class="fas fa-{{ $notificationLog->is_sent ? 'check' : 'times' }} text-{{ $notificationLog->is_sent ? 'success' : 'danger' }}"></i>
                             </td>
@@ -110,6 +105,7 @@
         {{ $notificationLogs->appends([
             'object' => request('object'),
             'object_id' => request('object_id'),
+            'notification_type' => request('notification_type'),
             'sent_status' => request('sent_status'),
             'limit' => request('limit'),
             'page' => request('page'),
