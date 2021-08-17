@@ -9,6 +9,7 @@ namespace Zenegal\NotificationLogs\Support;
 
 /**
  * Class Str
+ *
  * @package Zenegal\NotificationLogs\Support
  */
 class Str extends \Illuminate\Support\Str

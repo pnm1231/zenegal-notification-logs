@@ -7,6 +7,7 @@ use Zenegal\NotificationLogs\Models\NotificationLog;
 
 /**
  * Class PruneOldMailables
+ *
  * @package Zenegal\NotificationLogs\Commands
  */
 class PruneOldMailables extends Command
@@ -16,7 +17,7 @@ class PruneOldMailables extends Command
      *
      * @var string
      */
-    protected $signature = 'notification-logs:prune {--hours=72 : The number of hours to retain mails}';
+    protected $signature = 'notification-logs:prune {--hours=72 : The number of hours to retain mailables}';
 
     /**
      * The console command description.

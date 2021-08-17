@@ -46,15 +46,13 @@ class LogSendingMail
                     'tries' => $mail->tries + 1,
                 ]);
             } else {
-                // \Log::debug('LogSendingMail', $event->data['__notification_logs']);
-                // return;
                 NotificationLog::create([
                     'uuid' => $event->data['__notification_logs']['uuid'],
                     'store_id' => $event->data['__notification_logs']['store_id'],
                     'medium' => $event->data['__notification_logs']['medium'],
-                    'subject'  => $event->data['__notification_logs']['subject'] ?? '',
+                    'subject'  => substr($event->data['__notification_logs']['subject'] ?? '', 0, 191),
                     'recipients' =>  $event->data['__notification_logs']['recipients'] ?? [],
-                    'mailable_name' => $event->data['__notification_logs']['mailable_name'] ?? '',
+                    'mailable_name' => substr($event->data['__notification_logs']['mailable_name'] ?? '', 0, 191),
                     'mailable' => $event->data['__notification_logs']['mailable'] ?? null,
                     'model' => $event->data['__notification_logs']['model'],
                     'model_id' => $event->data['__notification_logs']['model_id'],
@@ -64,15 +62,5 @@ class LogSendingMail
                 ]);
             }
         }
-
-        /*if (! isset($event->data['notification_log'])) {
-            return;
-        }
-
-        \Log::debug('LogSendingMessage', [$event->data['notification_log']]);
-
-        $event->data['notification_log']->update([
-            'status' => 'sending',
-        ]);*/
     }
 }
